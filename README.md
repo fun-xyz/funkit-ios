@@ -19,21 +19,21 @@ dependencies: [
 ],
 targets: [
   .target(name: "YourApp", dependencies: [
-    .product(name: "FunkitConnect", package: "funkit-ios"),
+    .product(name: "Funkit", package: "funkit-ios"),
     // Only with the Stripe rail.
     .product(name: "FunkitStripe", package: "funkit-ios"),
   ])
 ]
 ```
 
-`FunkitConnect` and the runtime frameworks it links are XCFrameworks that
+`Funkit` and the runtime frameworks it links are XCFrameworks that
 download from `sdk-cdn.fun.xyz`; Xcode embeds and signs them with your app.
 `FunkitStripe` is source, because it compiles against your app's own
 stripe-ios.
 
 ## Switching over outcomes
 
-`FunkitConnect` is built with library evolution, so later versions may add
+`Funkit` is built with library evolution, so later versions may add
 cases to its enums. Add `@unknown default` to every `switch` over one:
 
 ```swift
