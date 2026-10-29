@@ -21,7 +21,9 @@
   public enum FunkitStripe {
     /// stripe-ios versions this adapter has passed the coexistence tests on.
     /// Others build (Package.swift admits the 26.x range) but log a warning.
-    public static let testedStripeVersions: Set<String> = ["26.9.0"]
+    /// None yet in the 26.13 range: 26.14.0 joins once docs/stripe.md's
+    /// coexistence matrix passes on it.
+    public static let testedStripeVersions: Set<String> = []
   }
 
   extension FunkitStripeConfiguration {
@@ -157,11 +159,13 @@
 
     private func configureOnramp(_ arguments: FunkitJSON) async throws -> FunkitJSON {
       guard let apiClient else { throw AdapterError.notInitialised }
+      let configuration = Self.onrampConfiguration(arguments)
       coordinator = try await CryptoOnrampCoordinator.create(
         apiClient: apiClient,
-        appearance: Self.linkAppearance(arguments["appearance"]),
-        cryptoCustomerID: arguments["cryptoCustomerId"]?.stringValue,
-        additionalSDKVersions: [SDKVersion(name: "funkit-swift", version: FunkitStripeVersion.current)]
+        appearance: configuration.appearance,
+        cryptoCustomerID: configuration.cryptoCustomerID,
+        additionalSDKVersions: [SDKVersion(name: "funkit-swift", version: FunkitStripeVersion.current)],
+        countryHint: configuration.countryHint
       )
       return .object([:])
     }

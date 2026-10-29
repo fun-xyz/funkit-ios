@@ -9,7 +9,7 @@ host. This package ships Funkit as prebuilt frameworks.
 | --- | --- |
 | iOS | 17.0+ |
 | Xcode | The version that built the release, or newer (see the release notes) |
-| Stripe rail (optional) | stripe-ios 26.9.0 up to, not including, 27.0.0 |
+| Stripe rail (optional) | stripe-ios 26.13.0 up to, not including, 27.0.0 |
 
 ## Install
 

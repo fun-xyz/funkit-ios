@@ -115,6 +115,7 @@
         firstName: normalized(json["firstName"]),
         lastName: normalized(json["lastName"]),
         idNumber: normalized(json["idNumber"]),
+        idType: json["idType"]?.stringValue.flatMap(IdType.init(rawValue:)) ?? .socialSecurityNumber,
         address: try json["address"].map { value throws -> StripeCryptoOnramp.Address in
           guard value.objectValue != nil else { throw KycInfoError.invalidField("address") }
           return kycAddress(value)
@@ -153,9 +154,14 @@
 
     static func kycInfoJSON(_ info: KycInfo) -> FunkitJSON {
       .fields([
+        // From an Apple Pay collection that asked for them, for prefill only.
+        "email": FunkitJSON(info.email),
+        "phone": FunkitJSON(info.phone),
+        "rawPhone": FunkitJSON(info.rawPhone),
         "firstName": FunkitJSON(info.firstName),
         "lastName": FunkitJSON(info.lastName),
         "idNumber": FunkitJSON(info.idNumber),
+        "idType": .string(info.idType.rawValue),
         "address": info.address.map { address in
           .fields([
             "city": FunkitJSON(address.city),
@@ -191,6 +197,22 @@
         "type": .string(type),
         "sublabel": FunkitJSON(data.sublabel),
       ])
+    }
+
+    /// `configureOnramp`'s arguments, as stripe-react-native's `mapToOnrampConfiguration` reads them.
+    struct OnrampConfiguration {
+      let appearance: LinkAppearance
+      let cryptoCustomerID: String?
+      /// Picks a merchant of record for a buyer with no KYC region yet.
+      let countryHint: String?
+    }
+
+    static func onrampConfiguration(_ arguments: FunkitJSON) -> OnrampConfiguration {
+      OnrampConfiguration(
+        appearance: linkAppearance(arguments["appearance"]),
+        cryptoCustomerID: arguments["cryptoCustomerId"]?.stringValue,
+        countryHint: arguments["countryHint"]?.stringValue
+      )
     }
 
     /// connect-rn sends only `style`; the colour overrides are ported for parity.
@@ -267,6 +289,9 @@
       request.paymentSummaryItems = try items.map(summaryItem)
       let billingFields = json["requiredBillingContactFields"]?.arrayValue?.compactMap(\.stringValue) ?? []
       request.requiredBillingContactFields = Set(billingFields.compactMap(contactField))
+      // connect-rn asks for the phone on the shipping contact; stripe-ios reads it from either.
+      let shippingFields = json["requiredShippingAddressFields"]?.arrayValue?.compactMap(\.stringValue) ?? []
+      request.requiredShippingContactFields = Set(shippingFields.compactMap(contactField))
       return request
     }
 
