@@ -1,7 +1,7 @@
 // Mappers ported from stripe-react-native 0.76.0 (ios/Mappers.swift,
 // ios/OnrampErrors.swift, ios/Errors.swift, ios/ApplePayUtils.swift; MIT,
-// © Stripe, Inc.). Result shapes match its JavaScript types exactly, since
-// connect-rn reads them unchanged.
+// © Stripe, Inc.), and the EU compliance ones from 0.82.0. Result shapes
+// match its JavaScript types exactly, since connect-rn reads them unchanged.
 
 #if canImport(StripeCryptoOnramp) && canImport(UIKit)
   import Foundation
@@ -106,6 +106,17 @@
     }
   }
 
+  enum ComplianceIdentifierError: Error {
+    case invalidField(String)
+
+    var result: FunkitJSON {
+      switch self {
+      case .invalidField(let field):
+        return OnrampErrorMapper.error(code: .unknown, message: "Invalid format for field: \(field)")
+      }
+    }
+  }
+
   extension FunkitStripeOnramp {
     static func kycInfo(_ json: FunkitJSON?) throws -> KycInfo {
       guard let json, json.objectValue != nil else {
@@ -180,6 +191,41 @@
         "birthCountry": FunkitJSON(info.birthCountry),
         "birthCity": FunkitJSON(info.birthCity),
         "nationalities": info.nationalities.map { .array($0.map(FunkitJSON.string)) },
+      ])
+    }
+
+    static func complianceIdentifier(_ json: FunkitJSON) throws -> ComplianceIdentifier {
+      guard let type = normalized(json["type"]) else { throw ComplianceIdentifierError.invalidField("type") }
+      guard let value = normalized(json["value"]) else { throw ComplianceIdentifierError.invalidField("value") }
+      return ComplianceIdentifier(type: ComplianceIdentifierType(rawValue: type), value: value)
+    }
+
+    static func identifierRequirementsJSON(_ requirements: ComplianceIdentifierRequirements) -> FunkitJSON {
+      .object([
+        "identifiers": .array(requirements.identifiers.map(identifierRequirementJSON)),
+        "alternatives": .array(requirements.alternatives.map(identifierAlternativesJSON)),
+        "carfTinRequired": .bool(requirements.carfTinRequired),
+      ])
+    }
+
+    static func submitIdentifiersJSON(_ result: SubmitIdentifiersResult) -> FunkitJSON {
+      .object([
+        "completed": .bool(result.completed),
+        "identifiers": .array(result.identifiers.map(identifierRequirementJSON)),
+        "alternatives": .array(result.alternatives.map(identifierAlternativesJSON)),
+        "carfTinRequired": .bool(result.carfTinRequired),
+        "invalidIdentifiers": .array(result.invalidIdentifiers.map { .string($0.rawValue) }),
+      ])
+    }
+
+    private static func identifierRequirementJSON(_ requirement: ComplianceIdentifierRequirement) -> FunkitJSON {
+      .object(["type": .string(requirement.type.rawValue), "regulation": .string(requirement.regulation.rawValue)])
+    }
+
+    private static func identifierAlternativesJSON(_ group: ComplianceIdentifierAlternativeGroup) -> FunkitJSON {
+      .object([
+        "originalMissingIdentifiers": .array(group.originalMissingIdentifiers.map { .string($0.rawValue) }),
+        "alternativeMissingIdentifiers": .array(group.alternativeMissingIdentifiers.map { .string($0.rawValue) }),
       ])
     }
 

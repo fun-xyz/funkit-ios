@@ -13,63 +13,63 @@ import PackageDescription
 let shellFrameworks: [Target] = [
   .binaryTarget(
     name: "FunkitShell",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/FunkitShell.xcframework.zip",
-    checksum: "a03f301974b9dd631c4e2b479f7326809d6e91cf3a6178beb829c3ff9a92cfed"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/FunkitShell.xcframework.zip",
+    checksum: "94950e6ca0cc68db5ec0dc0bf8701b32c128231aad756202e5a49f3753bd69f6"
   ),
   .binaryTarget(
     name: "ExpoBrownfield",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/ExpoBrownfield.xcframework.zip",
-    checksum: "330942d08a1a3b2d3a8cdda12678d9c174002a25873536a112baeebcdabf2e32"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/ExpoBrownfield.xcframework.zip",
+    checksum: "d653b0563bd32ae3a7378ba53660c346a5d8cd80b6c125059981ead95dff94f3"
   ),
   .binaryTarget(
     name: "ExpoFileSystem",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/ExpoFileSystem.xcframework.zip",
-    checksum: "89dfbac4d0bbc471dc276dfd81804053fd16431cf7c2cd031c013e8934820c26"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/ExpoFileSystem.xcframework.zip",
+    checksum: "55edc6431757a7b62d07323bf76e2d32b3fc1de8a0f29b33f5ae8b2d1da490d0"
   ),
   .binaryTarget(
     name: "ExpoFont",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/ExpoFont.xcframework.zip",
-    checksum: "388e765a9451ab77fa694fde5e6f50c27e77b54a70b8beb9da1a09b1b33db2cf"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/ExpoFont.xcframework.zip",
+    checksum: "2a9b21c7d305e77e0fac46a9c707697e9b1cc48fbac0417bdbe5bc6c5eb65d8d"
   ),
   .binaryTarget(
     name: "ExpoModulesCore",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/ExpoModulesCore.xcframework.zip",
-    checksum: "51bd7b6f52da808726957009e833d25fdbb5a8107f2843dbc4a7812f9b605f6b"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/ExpoModulesCore.xcframework.zip",
+    checksum: "aecf8785b818f29d2297a425bf3faf4b4f68eaa4973fc6858a45eade6fa94654"
   ),
   .binaryTarget(
     name: "ExpoModulesJSI",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/ExpoModulesJSI.xcframework.zip",
-    checksum: "390d9ab954d8b92414a1e2e257d45b544ac88a850b9f3faffea6bc858a48dca4"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/ExpoModulesJSI.xcframework.zip",
+    checksum: "36013374f7ebe8a003c501494780cee36518eec9c58dd28d6477eabd613e2b83"
   ),
   .binaryTarget(
     name: "ExpoModulesWorklets",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/ExpoModulesWorklets.xcframework.zip",
-    checksum: "ef25f0f07b579f9732496af4cc11d6e999a47a956c00b163d3020f60ac842d96"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/ExpoModulesWorklets.xcframework.zip",
+    checksum: "612bd2e091186e7a7b81c61f4ef53b06d7fecfb6164b823fb9d9f5d72693a0f7"
   ),
   .binaryTarget(
     name: "Funkit",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/Funkit.xcframework.zip",
-    checksum: "ecfbd0396de863c00c165ed60c211e38b719ac1d4a10ed83406f0c7ca7c6938b"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/Funkit.xcframework.zip",
+    checksum: "47183d126a8901d8be456ae794c52d5d1d37f1ae169221d5964506e331121e90"
   ),
   .binaryTarget(
     name: "IdensicMobileSDK",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/IdensicMobileSDK.xcframework.zip",
-    checksum: "a9ac07d84c04bb5bfc2398a7f3d75d4c31cae101b5bdd4ba4429be1581d2e9af"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/IdensicMobileSDK.xcframework.zip",
+    checksum: "1afbae95e45be941770ffefe24e3d842cf3bb4ed4147c1a6ef4bef5a53e4aeaa"
   ),
   .binaryTarget(
     name: "React",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/React.xcframework.zip",
-    checksum: "22432f6726769b351edd96ac19fe98a6e84050f7f45d001bd5f6bc32a2f56eca"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/React.xcframework.zip",
+    checksum: "838ab6705dd3e8f93c3639f34f9daff8da819adfbbde694de1ecf3fb434b8b7f"
   ),
   .binaryTarget(
     name: "ReactNativeDependencies",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/ReactNativeDependencies.xcframework.zip",
-    checksum: "77160edd7470299e3dd511911f9e2ee28b794dfce86996a88e4b56f84938e1df"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/ReactNativeDependencies.xcframework.zip",
+    checksum: "5e6f267276e6481e3e1415cc7932998f21f5e5f8ef8cc140067239d693cd025e"
   ),
   .binaryTarget(
     name: "hermesvm",
-    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.8/hermesvm.xcframework.zip",
-    checksum: "c43f440ae7442ef48ffa8ebd99ad2091e6495cfea8a4377a07b3cd949c00dc02"
+    url: "https://sdk-cdn.fun.xyz/funkit-swift/0.1.0-rc.9/hermesvm.xcframework.zip",
+    checksum: "844d8f81f2b214b16d908012890781ecfd5d633670e08d22ddd28f61c84c3ed7"
   ),
 ]
 // END BINARY TARGETS

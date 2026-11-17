@@ -1,5 +1,6 @@
-// Crypto Onramp calls ported from stripe-react-native 0.76.0
-// (ios/StripeSdkImpl.swift, ios/OnrampErrors.swift; MIT, © Stripe, Inc.).
+// Crypto Onramp calls ported from stripe-react-native 0.76.0, and the EU
+// compliance calls from 0.82.0 (ios/StripeSdkImpl.swift, ios/OnrampErrors.swift;
+// MIT, © Stripe, Inc.).
 // Unlike that module, this runs on a dedicated STPAPIClient and leaves
 // StripeAPI.defaultPublishableKey, stripeAccount, appInfo and the 3-D Secure
 // globals alone. One exception: STPAPIClient.shared gets the onramp's key when
@@ -111,6 +112,12 @@
           return try await presentKycInfoVerification(arguments)
         case "verifyIdentity":
           return try await verifyIdentity()
+        case "retrieveMissingIdentifiers":
+          return Self.identifierRequirementsJSON(try await requireCoordinator().retrieveMissingIdentifiers())
+        case "submitIdentifiers":
+          return try await submitIdentifiers(arguments)
+        case "presentUserAttestation":
+          return try await presentUserAttestation()
         case "logout":
           try await requireCoordinator().logOut()
           return .object([:])
@@ -129,6 +136,8 @@
       } catch let error as AdapterError {
         return error.result
       } catch let error as KycInfoError {
+        return error.result
+      } catch let error as ComplianceIdentifierError {
         return error.result
       } catch {
         return OnrampErrorMapper.failed(error)
@@ -247,6 +256,30 @@
         return .object([:])
       case .canceled:
         return OnrampErrorMapper.error(code: .canceled, message: "Identity verification was cancelled")
+      }
+    }
+
+    // MARK: - EU compliance
+
+    private func submitIdentifiers(_ arguments: FunkitJSON) async throws -> FunkitJSON {
+      let coordinator = try requireCoordinator()
+      guard let identifiers = arguments["identifiers"]?.arrayValue, identifiers.allSatisfy({ $0.objectValue != nil }) else {
+        return OnrampErrorMapper.error(
+          code: .failed,
+          message: "Unexpected format of identifiers array. Expected dictionaries with String keys."
+        )
+      }
+      let result = try await coordinator.submitIdentifiers(try identifiers.map(Self.complianceIdentifier))
+      return Self.submitIdentifiersJSON(result)
+    }
+
+    private func presentUserAttestation() async throws -> FunkitJSON {
+      let result = try await requireCoordinator().presentUserAttestation(from: try presenter())
+      switch result {
+      case .confirmed:
+        return .fields(["status": "Confirmed"])
+      case .canceled:
+        return OnrampErrorMapper.error(code: .canceled, message: "User attestation was canceled")
       }
     }
 
