@@ -47,9 +47,9 @@ v=<version>
 base=https://sdk-cdn.fun.xyz/funkit-swift/$v
 curl -fsSL --remote-name-all $base/{SHA256SUMS,attestation.sigstore.json,Funkit.xcframework.zip}
 gh attestation verify SHA256SUMS --bundle attestation.sigstore.json \
-  --repo fun-xyz/funkit-swift \
-  --signer-workflow fun-xyz/funkit-swift/.github/workflows/release.yml \
-  --source-ref refs/tags/$v
+  --repo fun-xyz/funkit \
+  --signer-workflow fun-xyz/funkit/.github/workflows/release-funkit-swift.yml \
+  --source-ref refs/tags/funkit-swift@$v
 shasum -a 256 --ignore-missing -c SHA256SUMS
 ditto -x -k Funkit.xcframework.zip . && codesign --verify --strict Funkit.xcframework
 codesign -dvv Funkit.xcframework 2>&1 | grep TeamIdentifier  # TeamIdentifier=4YX7USBGCA
@@ -62,15 +62,20 @@ package declares. Check it the same way:
 ```sh
 curl -fsSL --remote-name-all $base/{sbom.cdx.json,sbom.sigstore.json}
 gh attestation verify sbom.cdx.json --bundle attestation.sigstore.json \
-  --repo fun-xyz/funkit-swift \
-  --signer-workflow fun-xyz/funkit-swift/.github/workflows/release.yml \
-  --source-ref refs/tags/$v
+  --repo fun-xyz/funkit \
+  --signer-workflow fun-xyz/funkit/.github/workflows/release-funkit-swift.yml \
+  --source-ref refs/tags/funkit-swift@$v
 gh attestation verify Funkit.xcframework.zip --bundle sbom.sigstore.json \
   --predicate-type https://cyclonedx.org/bom \
-  --repo fun-xyz/funkit-swift \
-  --signer-workflow fun-xyz/funkit-swift/.github/workflows/release.yml \
-  --source-ref refs/tags/$v
+  --repo fun-xyz/funkit \
+  --signer-workflow fun-xyz/funkit/.github/workflows/release-funkit-swift.yml \
+  --source-ref refs/tags/funkit-swift@$v
 ```
+
+Versions up to 0.1.0-rc.9 were built in another repository. For those, pass
+`--repo fun-xyz/funkit-swift`,
+`--signer-workflow fun-xyz/funkit-swift/.github/workflows/release.yml` and
+`--source-ref refs/tags/$v` instead.
 
 It needs the GitHub CLI 2.102.0 or later, but no GitHub account. Offline,
 add `--custom-trusted-root trusted_root.jsonl`, saved earlier with
